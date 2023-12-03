@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mediterm_dictionary/services/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:mediterm_dictionary/model/model.dart'; // Import the model file
+import 'package:mediterm_dictionary/models/model.dart'; // Import the model file
 
 class MedicalDictionary extends StatefulWidget {
   const MedicalDictionary({Key? key}) : super(key: key);
