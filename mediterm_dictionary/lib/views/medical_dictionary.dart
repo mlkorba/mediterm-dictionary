@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mediterm_dictionary/services/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:mediterm_dictionary/models/model.dart'; // Import the model file
+import 'package:mediterm_dictionary/models/model.dart';
+import 'package:mediterm_dictionary/views/word_details.dart'; // Import the model file
 
 class MedicalDictionary extends StatefulWidget {
   const MedicalDictionary({Key? key}) : super(key: key);
@@ -35,6 +36,7 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
     if (word.isNotEmpty) {
       try {
         final results = await apiService.fetchDefinition(word);
+        print('API Response: $results');
         setState(() {
           definitions = results
               .map<Definition>((dynamic entry) => Definition.fromJson(entry))
@@ -55,7 +57,7 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Medical Dictionary'),
+        title: const Text('MediTerm Dictionary'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -74,15 +76,43 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
             ),
             const SizedBox(height: 16),
             Expanded(
-              child: ListView.builder(
-                itemCount: definitions.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(definitions[index].term),
-                    subtitle: Text(definitions[index].definition),
-                  );
-                },
-              ),
+              child: definitions.isEmpty
+                  ? const Center(
+                      child: Text('No results found.'),
+                    )
+                  : ListView.builder(
+                      itemCount: definitions.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            // Navigate to the detail page when a word is tapped
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => WordDetailPage(
+                                  definition: definitions[index],
+                                ),
+                              ),
+                            );
+                          },
+                          child: Card(
+                            elevation: 3,
+                            margin: const EdgeInsets.symmetric(vertical: 8),
+                            child: ListTile(
+                              title: Text(
+                                definitions[index].term,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Text(definitions[index].definition),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
             ),
           ],
         ),
