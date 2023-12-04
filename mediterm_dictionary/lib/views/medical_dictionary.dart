@@ -100,7 +100,7 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
                             margin: const EdgeInsets.symmetric(vertical: 8),
                             child: ListTile(
                               title: Text(
-                                definitions[index].term,
+                                definitions[index].id,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold),
                               ),
