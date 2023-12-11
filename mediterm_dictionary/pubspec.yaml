@@ -9,9 +9,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ^1.1.2
+  google_fonts:
+  http:
   shared_preferences: ^2.0.10
-  audioplayers: ^5.2.1
+  audioplayers:
 
 dev_dependencies:
   flutter_test:
@@ -20,3 +21,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/medical-book-heart.jpg
+    - assets/vintage-anatomy.jpg
+    - assets/medical-desk.jpg
