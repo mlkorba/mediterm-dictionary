@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'views/medical_dictionary.dart';
+import 'views/home.dart';
 import 'services/api_service.dart';
 
 final ApiService apiService =
@@ -15,7 +15,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: MedicalDictionary(),
+      home: HomePage(),
     );
   }
 }
