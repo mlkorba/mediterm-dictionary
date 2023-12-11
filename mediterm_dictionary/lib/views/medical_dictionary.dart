@@ -133,18 +133,33 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
                               ),
                             );
                           },
-                          child: Card(
-                            elevation: 3,
-                            margin: const EdgeInsets.symmetric(vertical: 8),
                             child: ListTile(
-                              title: Text(
-                                definitions[index].id,
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    term.id,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold),
                               ),
-                              subtitle: Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Text(definitions[index].definition),
+                                  // Other details you might want to display
+                                ],
+                              ),
+                              trailing: IconButton(
+                                icon: Icon(
+                                  bookmarkedDefinitions.contains(term)
+                                      ? Icons.bookmark
+                                      : Icons.bookmark_border,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    if (bookmarkedDefinitions.contains(term)) {
+                                      bookmarkedDefinitions.remove(term);
+                                    } else {
+                                      bookmarkedDefinitions.add(term);
+                                    }
+                                  });
+                                },
                               ),
                             ),
                           ),
