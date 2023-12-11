@@ -46,6 +46,7 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
   }
 
   Future<void> _saveLastSearch(String word) async {
+    _prefs = await SharedPreferences.getInstance();
     await _prefs.setString(_lastSearchKey, word);
   }
 
@@ -123,25 +124,25 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
                           elevation: 3,
                           margin: const EdgeInsets.symmetric(vertical: 8),
                           child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => WordDetailPage(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => WordDetailPage(
                                     definition: term,
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
+                              );
+                            },
                             child: ListTile(
                               title: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     term.id,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
-                              ),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                   // Other details you might want to display
                                 ],
                               ),
