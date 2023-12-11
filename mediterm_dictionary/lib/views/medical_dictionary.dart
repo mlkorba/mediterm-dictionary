@@ -118,14 +118,17 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
                   : ListView.builder(
                       itemCount: definitions.length,
                       itemBuilder: (context, index) {
-                        return GestureDetector(
+                        final term = definitions[index];
+                        return Card(
+                          elevation: 3,
+                          margin: const EdgeInsets.symmetric(vertical: 8),
+                          child: GestureDetector(
                           onTap: () {
-                            // Navigate to the detail page when a word is tapped
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => WordDetailPage(
-                                  definition: definitions[index],
+                                    definition: term,
                                 ),
                               ),
                             );
