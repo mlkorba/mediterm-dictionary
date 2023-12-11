@@ -80,7 +80,20 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _search,
-              child: const Text('Search'),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.lightBlue,
+                minimumSize: const Size(200, 40),
+                disabledForegroundColor: Colors.blue.withOpacity(0.38),
+                disabledBackgroundColor: Colors.blue.withOpacity(0.12),
+              ),
+              child: const Text(
+                'Search',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
             ),
             const SizedBox(height: 16),
             Expanded(
