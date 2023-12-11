@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mediterm_dictionary/views/medical_dictionary.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -6,77 +7,46 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Medical Home Page'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            _buildMedicalCard(
-              title: 'Human Anatomy',
-              description: 'Explore the detailed anatomy of the human body.',
-              imageAsset: 'assets/anatomy.jpg', // Replace with your image asset
-              onTap: () {
-                // Navigate to the corresponding screen or perform an action
-                // Example: Navigator.push(context, MaterialPageRoute(builder: (context) => AnatomyScreen()));
-              },
-            ),
-            const SizedBox(height: 16),
-            _buildMedicalCard(
-              title: 'Medical Dictionary',
-              description: 'Search and learn about medical terms.',
-              imageAsset:
-                  'assets/dictionary.jpg', // Replace with your image asset
-              onTap: () {
-                // Navigate to the Medical Dictionary screen
-              },
-            ),
-            // Add more cards as needed
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMedicalCard({
-    required String title,
-    required String description,
-    required String imageAsset,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Card(
-        elevation: 4,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Image.asset(
-              imageAsset,
-              height: 150,
-              fit: BoxFit.cover,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Background Image with Dark Overlay
+          Image.asset(
+            'assets/vintage-anatomy.jpg', // Replace with your image asset
+            fit: BoxFit.cover,
+          ),
+          Container(
+            color: Colors.black.withOpacity(0.5), // Adjust opacity as needed
+          ),
+          // Content
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'MediTerm Dictionary',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    description,
-                    style: const TextStyle(fontSize: 14),
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MedicalDictionary(),
+                      ),
+                    );
+                  },
+                  child: const Text('Let\'s Go'),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
