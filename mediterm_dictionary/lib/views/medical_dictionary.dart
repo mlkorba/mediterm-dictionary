@@ -22,13 +22,7 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
   @override
   void initState() {
     super.initState();
-    _loadLastSearch();
-  }
-
-  Future<void> _loadLastSearch() async {
-    _prefs = await SharedPreferences.getInstance();
-    final lastSearch = _prefs.getString(_lastSearchKey) ?? '';
-    _controller.text = lastSearch;
+    _controller.clear();
   }
 
   void _search() async {
