@@ -96,6 +96,18 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
                 ),
               ),
             ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BookmarkListPage(
+                      bookmarkedTerms: bookmarkedDefinitions,
+                    ),
+                  ),
+                );
+              },
+              child: const Text('View Bookmarks'),
             ),
             const SizedBox(height: 16),
             Expanded(
