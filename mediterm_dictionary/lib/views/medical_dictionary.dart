@@ -51,7 +51,21 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('MediTerm Dictionary'),
+        backgroundColor: Colors.blue,
+        title: const Text(
+          'MediTerm Dictionary',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
+        leading: BackButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          color: Colors.white,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
