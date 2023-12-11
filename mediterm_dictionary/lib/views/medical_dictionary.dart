@@ -3,6 +3,7 @@ import 'package:mediterm_dictionary/services/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mediterm_dictionary/models/model.dart';
 import 'package:mediterm_dictionary/views/word_details.dart'; // Import the model file
+import 'package:mediterm_dictionary/views/bookmark_list.dart'; // Import the bookmark list page
 
 class MedicalDictionary extends StatefulWidget {
   const MedicalDictionary({Key? key}) : super(key: key);
@@ -16,6 +17,7 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
   final ApiService apiService =
       ApiService('e685bd9f-83a4-429f-bfa1-599dfb152bec');
   List<Definition> definitions = [];
+  List<Definition> bookmarkedDefinitions = [];
   late SharedPreferences _prefs;
   final String _lastSearchKey = 'lastSearch';
 
