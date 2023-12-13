@@ -80,6 +80,7 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
               color: Colors.red,
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(20.0),
+                bottomRight: Radius.circular(-20.0),
               ),
               boxShadow: [
                 BoxShadow(
@@ -91,72 +92,57 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
               ],
             ),
             padding: const EdgeInsets.all(16.0),
-            child: const Center(
-              child: Text(
-                'Search',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 24,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(32.0),
             child: Column(
               children: [
-                TextField(
-                  controller: _controller,
-                  decoration: const InputDecoration(
-                    labelText: 'Enter a medical term',
+                // Search bar
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.15),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: _search,
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.lightBlue,
-                    minimumSize: const Size(200, 40),
-                    disabledForegroundColor: Colors.blue.withOpacity(0.38),
-                    disabledBackgroundColor: Colors.blue.withOpacity(0.12),
-                  ),
-                  child: const Text(
-                    'Search',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: TextField(
+                    controller: _controller,
+                    decoration: InputDecoration(
+                      hintText: 'Enter a medical term',
+                      border: InputBorder.none,
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.search),
+                        onPressed: _search,
+                      ),
                     ),
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () async {
-                    final result = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BookmarkListPage(
-                          bookmarkedTerms: bookmarkedDefinitions,
-                          onUnbookmark: (term) {
-                            // Update the state when an item is unbookmarked
-                            setState(() {
-                              bookmarkedDefinitions.remove(term);
-                            });
-                          },
-                        ),
-                      ),
-                    );
-                    // Handle the result if needed
-                  },
-                  child: const Text('View Bookmarks'),
-                ),
                 const SizedBox(height: 16),
+                // Your buttons or other UI elements can go here
+              ],
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.all(0.0),
+            child: Column(
+              children: [
+                SizedBox(height: 16),
+                Row(
+                  children: [
+                    SizedBox(width: 16), // Add some spacing between the buttons
+                  ],
+                ),
+                SizedBox(height: 16),
               ],
             ),
           ),
           Expanded(
             child: definitions.isEmpty
-                ? const SizedBox
-                    .shrink() // This will hide the container when no results are found
+                ? const SizedBox.shrink()
                 : Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: ListView.builder(
@@ -216,6 +202,41 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
                   ),
           ),
         ],
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.red,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.home, color: Colors.white),
+              onPressed: () {
+                Navigator.pushReplacementNamed(
+                  context,
+                  '/medical_dictionary',
+                ); // Navigate to MedicalDictionary
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.bookmark, color: Colors.white),
+              onPressed: () async {
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BookmarkListPage(
+                      bookmarkedTerms: bookmarkedDefinitions,
+                      onUnbookmark: (term) {
+                        setState(() {
+                          bookmarkedDefinitions.remove(term);
+                        });
+                      },
+                    ),
+                  ),
+                ); // Navigate to BookmarkListPage
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
