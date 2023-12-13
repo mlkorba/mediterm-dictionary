@@ -38,10 +38,10 @@ class WordDetailPage extends StatelessWidget {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.15), // Color of the shadow
-                  spreadRadius: 2, // Spread radius
-                  blurRadius: 5, // Blur radius
-                  offset: const Offset(0, 3), // Offset from the top
+                  color: Colors.black.withOpacity(0.15),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: const Offset(0, 3),
                 ),
               ],
             ),
@@ -150,11 +150,37 @@ class WordDetailPage extends StatelessWidget {
           ),
         ],
       ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.red,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.home, color: Colors.white),
+              onPressed: () {
+                Navigator.pushReplacementNamed(
+                  context,
+                  '/medical_dictionary',
+                ); // Navigate to MedicalDictionary
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.bookmark, color: Colors.white),
+              onPressed: () {
+                Navigator.pushReplacementNamed(
+                  context,
+                  '/bookmark_list',
+                ); // Navigate to BookmarkListPage
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   String cleanUpDefinition(String input) {
-    return input.replaceAll(RegExp(r'\{bc\}'), ''); // Remove {bc}
+    return input.replaceAll(RegExp(r'\{bc\}'), '');
   }
 
   String capitalize(String input) {
