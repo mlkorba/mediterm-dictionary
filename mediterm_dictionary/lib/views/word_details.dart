@@ -175,7 +175,14 @@ class HwiWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('hw: ${capitalize(hwi['hw'])}'), // Capitalize the first word in hw
+        Text(
+          hwi['hw'],
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
       ],
     );
   }
