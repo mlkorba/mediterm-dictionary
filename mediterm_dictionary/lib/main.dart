@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'views/home.dart';
+import 'views/medical_dictionary.dart';
 import 'services/api_service.dart';
 
 final ApiService apiService =
@@ -14,8 +15,17 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomePage(),
+    return MaterialApp(
+      title: 'My Medical Dictionary App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const HomePage(),
+        '/medical_dictionary': (context) => const MedicalDictionary(),
+        // Add more routes if needed
+      },
     );
   }
 }
