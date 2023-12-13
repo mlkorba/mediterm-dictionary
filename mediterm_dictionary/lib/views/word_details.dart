@@ -52,12 +52,12 @@ class WordDetailPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                capitalize(definition.id),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 32,
-                ),
+                    capitalize(definition.id),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 32,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   HwiWidget(hwi: definition.hwi),
@@ -80,18 +80,18 @@ class WordDetailPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                const SizedBox(height: 8),
-                DefinitionWidget(def: definition.def),
-                if (definition.def.isNotEmpty &&
-                    definition.def[0]['cats'] != null) ...[
-                  const SizedBox(height: 8),
-                  const Text(
-                    'cat:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
+                          const SizedBox(height: 8),
+                          DefinitionWidget(def: definition.def),
+                          if (definition.def.isNotEmpty &&
+                              definition.def[0]['cats'] != null) ...[
+                            const SizedBox(height: 8),
+                            const Text(
+                              'cat:',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                             Text(cleanUpDefinition(
                                 definition.def[0]['cats'].toString())),
-                ],
+                          ],
                         ],
                       ),
                     ),
@@ -186,13 +186,13 @@ class HwiWidget extends StatelessWidget {
       ],
     );
   }
+}
 
-  String capitalize(String input) {
-    if (input.isEmpty) {
-      return input;
-    }
-    return input[0].toUpperCase() + input.substring(1);
+String capitalize(String input) {
+  if (input.isEmpty) {
+    return input;
   }
+  return input[0].toUpperCase() + input.substring(1);
 }
 
 class DefinitionWidget extends StatelessWidget {
@@ -221,6 +221,7 @@ class DefinitionWidget extends StatelessWidget {
         RegExp(r'\{bc\}(.+?)\]').firstMatch(input)?.group(1)?.trim() ?? '';
     return result;
   }
+
   String capitalizeFirstWord(String input) {
     if (input.isEmpty) {
       return input;
