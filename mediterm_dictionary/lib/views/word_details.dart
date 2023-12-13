@@ -35,7 +35,8 @@ class WordDetailPage extends StatelessWidget {
           color: Colors.white,
         ),
       ),
-      body: Column(
+      body: SingleChildScrollView(
+        child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
