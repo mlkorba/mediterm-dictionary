@@ -119,6 +119,8 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
                         onPressed: _search,
                       ),
                     ),
+                    onChanged: (value) => _search(),
+                    onSubmitted: (value) => _search(),
                   ),
                 ),
                 const SizedBox(height: 16),
