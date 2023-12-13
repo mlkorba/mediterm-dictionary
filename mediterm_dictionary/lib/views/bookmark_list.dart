@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mediterm_dictionary/models/model.dart'; // Import your actual model file
+import 'package:mediterm_dictionary/models/model.dart';
 
 class BookmarkListPage extends StatefulWidget {
   final List<Definition> bookmarkedTerms;
+  final ValueChanged<Definition> onUnbookmark;
 
-  BookmarkListPage({required this.bookmarkedTerms});
+  BookmarkListPage({
+    required this.bookmarkedTerms,
+    required this.onUnbookmark,
+  });
 
   @override
   _BookmarkListPageState createState() => _BookmarkListPageState();
@@ -23,6 +27,7 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
         action: SnackBarAction(
           label: 'Undo',
           onPressed: () {
+            // Re-add the term to the list if the user undoes the action
             setState(() {
               widget.bookmarkedTerms.add(term);
             });
@@ -51,7 +56,10 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
                 setState(() {
                   widget.bookmarkedTerms.remove(term);
                 });
+
+                // Show the undo snackbar and pass the updated list back to MedicalDictionary
                 _showUndoSnackBar(term);
+                widget.onUnbookmark(term);
               },
             ),
           );
