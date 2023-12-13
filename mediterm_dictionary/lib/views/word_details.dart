@@ -199,11 +199,11 @@ class DefinitionWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'DEF:',
+          'DEFINITION:',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         for (var definition in def) ...[
-          Text(cleanUpDefinition(definition.toString())),
+          Text(capitalizeFirstWord(cleanUpDefinition(definition.toString()))),
         ],
       ],
     );
