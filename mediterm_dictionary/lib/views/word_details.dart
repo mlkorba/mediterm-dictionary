@@ -3,8 +3,13 @@ import 'package:mediterm_dictionary/models/model.dart';
 
 class WordDetailPage extends StatelessWidget {
   final Definition definition;
+  final bool isBookmarked;
 
-  const WordDetailPage({Key? key, required this.definition}) : super(key: key);
+  const WordDetailPage({
+    super.key,
+    required this.definition,
+    required this.isBookmarked,
+  });
 
   @override
   Widget build(BuildContext context) {
