@@ -214,4 +214,10 @@ class DefinitionWidget extends StatelessWidget {
         RegExp(r'\{bc\}(.+?)\]').firstMatch(input)?.group(1)?.trim() ?? '';
     return result;
   }
+  String capitalizeFirstWord(String input) {
+    if (input.isEmpty) {
+      return input;
+    }
+    return input[0].toUpperCase() + input.substring(1);
+  }
 }
