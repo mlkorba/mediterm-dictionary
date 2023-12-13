@@ -70,6 +70,24 @@ class WordDetailPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   HwiWidget(hwi: definition.hwi),
+                    IconButton(
+                      icon: Icon(
+                        // Icons.bookmark_border,
+                        color: Colors.white,
+                        bookmarkedDefinitions.contains(definition)
+                            ? Icons.bookmark
+                            : Icons.bookmark_border,
+                      ),
+                      onPressed: () {
+                        // setState(() {
+                        //   if (bookmarkedDefinitions.contains(term)) {
+                        //     bookmarkedDefinitions.remove(term);
+                        //   } else {
+                        //     bookmarkedDefinitions.add(term);
+                        //   }
+                        // });
+                      },
+                    ),
                 ],
               ),
             ),
