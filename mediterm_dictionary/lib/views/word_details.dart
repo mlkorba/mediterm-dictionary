@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:mediterm_dictionary/models/model.dart';
+import 'package:mediterm_dictionary/views/bookmark_list.dart';
 
 class WordDetailPage extends StatelessWidget {
   final Definition definition;
   final bool isBookmarked;
+  final List<Definition> bookmarkedDefinitions;
 
   const WordDetailPage({
     super.key,
     required this.definition,
     required this.isBookmarked,
+    required this.bookmarkedDefinitions,
   });
 
   @override
