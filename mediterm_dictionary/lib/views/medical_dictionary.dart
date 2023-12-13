@@ -1,9 +1,11 @@
+// ignore_for_file: library_private_types_in_public_api, avoid_print
+
 import 'package:flutter/material.dart';
-import 'package:mediterm_dictionary/services/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mediterm_dictionary/services/api_service.dart';
+import 'package:mediterm_dictionary/views/bookmark_list.dart';
 import 'package:mediterm_dictionary/models/model.dart';
-import 'package:mediterm_dictionary/views/word_details.dart'; // Import the model file
-import 'package:mediterm_dictionary/views/bookmark_list.dart'; // Import the bookmark list page
+import 'package:mediterm_dictionary/views/word_details.dart';
 
 class MedicalDictionary extends StatefulWidget {
   const MedicalDictionary({Key? key}) : super(key: key);
@@ -53,124 +55,156 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: const Text(
-          'MediTerm Dictionary',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        leading: BackButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          color: Colors.white,
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _controller,
-              decoration: const InputDecoration(
-                labelText: 'Enter a medical term',
-              ),
+        appBar: AppBar(
+          backgroundColor: Colors.red,
+          title: const Text(
+            'MediTerm Dictionary',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              fontSize: 16,
             ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _search,
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.lightBlue,
-                minimumSize: const Size(200, 40),
-                disabledForegroundColor: Colors.blue.withOpacity(0.38),
-                disabledBackgroundColor: Colors.blue.withOpacity(0.12),
+          ),
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.red,
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(20.0),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.15),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
               ),
-              child: const Text(
-                'Search',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
+              padding: const EdgeInsets.all(16.0),
+              child: const Center(
+                child: Text(
+                  'Search',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 24,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BookmarkListPage(
-                      bookmarkedTerms: bookmarkedDefinitions,
+            Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Column(
+                children: [
+                  TextField(
+                    controller: _controller,
+                    decoration: const InputDecoration(
+                      labelText: 'Enter a medical term',
                     ),
                   ),
-                );
-              },
-              child: const Text('View Bookmarks'),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _search,
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.lightBlue,
+                      minimumSize: const Size(200, 40),
+                      disabledForegroundColor: Colors.blue.withOpacity(0.38),
+                      disabledBackgroundColor: Colors.blue.withOpacity(0.12),
+                    ),
+                    child: const Text(
+                      'Search',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BookmarkListPage(
+                            bookmarkedTerms: bookmarkedDefinitions,
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Text('View Bookmarks'),
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
             ),
-            const SizedBox(height: 16),
             Expanded(
               child: definitions.isEmpty
                   ? const Center(
                       child: Text('No results found.'),
                     )
-                  : ListView.builder(
-                      itemCount: definitions.length,
-                      itemBuilder: (context, index) {
-                        final term = definitions[index];
-                        return Card(
-                          elevation: 3,
-                          margin: const EdgeInsets.symmetric(vertical: 8),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => WordDetailPage(
-                                    definition: term,
+                  : Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: ListView.builder(
+                        itemCount: definitions.length,
+                        itemBuilder: (context, index) {
+                          final term = definitions[index];
+                          return Card(
+                            elevation: 3,
+                            margin: const EdgeInsets.symmetric(vertical: 8),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => WordDetailPage(
+                                      definition: term,
+                                    ),
                                   ),
+                                );
+                              },
+                              child: ListTile(
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      term.id,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    // Other details you might want to display
+                                  ],
                                 ),
-                              );
-                            },
-                            child: ListTile(
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    term.id,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
+                                trailing: IconButton(
+                                  icon: Icon(
+                                    bookmarkedDefinitions.contains(term)
+                                        ? Icons.bookmark
+                                        : Icons.bookmark_border,
                                   ),
-                                  // Other details you might want to display
-                                ],
-                              ),
-                              trailing: IconButton(
-                                icon: Icon(
-                                  bookmarkedDefinitions.contains(term)
-                                      ? Icons.bookmark
-                                      : Icons.bookmark_border,
+                                  onPressed: () {
+                                    setState(() {
+                                      if (bookmarkedDefinitions
+                                          .contains(term)) {
+                                        bookmarkedDefinitions.remove(term);
+                                      } else {
+                                        bookmarkedDefinitions.add(term);
+                                      }
+                                    });
+                                  },
                                 ),
-                                onPressed: () {
-                                  setState(() {
-                                    if (bookmarkedDefinitions.contains(term)) {
-                                      bookmarkedDefinitions.remove(term);
-                                    } else {
-                                      bookmarkedDefinitions.add(term);
-                                    }
-                                  });
-                                },
                               ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
             ),
           ],
-        ),
-      ),
-    );
+        ));
   }
 }
