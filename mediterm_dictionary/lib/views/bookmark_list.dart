@@ -20,7 +20,7 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
       SnackBar(
         content: Center(
           child: Text(
-            '${term.term} was unbookmarked',
+            '${_capitalizeFirstLetter(term.term.replaceAll('*', ''))} was unbookmarked',
             textAlign: TextAlign.center,
           ),
         ),
@@ -37,33 +37,80 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
     );
   }
 
+  String _capitalizeFirstLetter(String input) {
+    if (input.isEmpty) {
+      return input;
+    }
+    return input[0].toUpperCase() + input.substring(1);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bookmarked Terms'),
+        backgroundColor: Colors.red,
+        title: const Text(
+          'MediTerm Dictionary',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontSize: 16,
+          ),
+        ),
+        centerTitle: true,
+        leading: BackButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          color: Colors.white,
+        ),
       ),
-      body: ListView.builder(
-        itemCount: widget.bookmarkedTerms.length,
-        itemBuilder: (context, index) {
-          final term = widget.bookmarkedTerms[index];
-          return ListTile(
-            title: Text(term.term),
-            subtitle: Text(term.definition),
-            trailing: IconButton(
-              icon: const Icon(Icons.bookmark),
-              onPressed: () {
-                setState(() {
-                  widget.bookmarkedTerms.remove(term);
-                });
+      body: Column(
+        children: [
+          Container(
+            color: Colors.red,
+            padding: const EdgeInsets.all(16.0),
+            child: const Center(
+              child: Text(
+                'Bookmark List',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 32,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: widget.bookmarkedTerms.length,
+              itemBuilder: (context, index) {
+                final term = widget.bookmarkedTerms[index];
+                return Card(
+                  elevation: 4.0,
+                  margin: const EdgeInsets.all(8.0),
+                  child: ListTile(
+                    title: Text(
+                        _capitalizeFirstLetter(term.term.replaceAll('*', ''))),
+                    // subtitle: Text(term.definition),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.bookmark),
+                      onPressed: () {
+                        setState(() {
+                          widget.bookmarkedTerms.remove(term);
+                        });
 
-                // Show the undo snackbar and pass the updated list back to MedicalDictionary
-                _showUndoSnackBar(term);
-                widget.onUnbookmark(term);
+                        // Show the undo snackbar and pass the updated list back to MedicalDictionary
+                        _showUndoSnackBar(term);
+                        widget.onUnbookmark(term);
+                      },
+                    ),
+                  ),
+                );
               },
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
