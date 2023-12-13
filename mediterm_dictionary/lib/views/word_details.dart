@@ -39,13 +39,21 @@ class WordDetailPage extends StatelessWidget {
             ),
             padding: const EdgeInsets.all(16.0),
             child: Center(
-              child: Text(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
                 capitalize(definition.id),
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 32,
                 ),
+                  ),
+                  const SizedBox(height: 4),
+                  HwiWidget(hwi: definition.hwi),
+                ],
               ),
             ),
           ),
@@ -54,26 +62,16 @@ class WordDetailPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Stems:',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  definition.stems
-                      .join(', '), // Join stems without square brackets
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  'HWI:',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                HwiWidget(hwi: definition.hwi),
-                const SizedBox(height: 8),
-                const Text(
-                  'FL:',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(definition.fl),
+                // Card for definition.def
+                SizedBox(
+                  width: double.infinity,
+                  child: Card(
+                    elevation: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
                 const SizedBox(height: 8),
                 DefinitionWidget(def: definition.def),
                 if (definition.def.isNotEmpty &&
@@ -83,8 +81,62 @@ class WordDetailPage extends StatelessWidget {
                     'cat:',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Text(cleanUpDefinition(definition.def[0]['cats'].toString())),
+                            Text(cleanUpDefinition(
+                                definition.def[0]['cats'].toString())),
                 ],
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                // Card for definition.stems.join(', ')
+                SizedBox(
+                  width: double.infinity,
+                  child: Card(
+                    elevation: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 8),
+                          const Text(
+                            'RELATED TERMS:',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            capitalize(definition.stems.join(', ')),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                // Card for definition.fl
+                SizedBox(
+                  width: double.infinity,
+                  child: Card(
+                    elevation: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 8),
+                          const Text(
+                            'FUNCTIONAL LABEL:',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(capitalize(definition.fl)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
