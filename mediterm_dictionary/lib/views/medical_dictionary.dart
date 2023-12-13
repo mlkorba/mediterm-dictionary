@@ -211,15 +211,6 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(
-              icon: const Icon(Icons.home, color: Colors.white),
-              onPressed: () {
-                Navigator.pushReplacementNamed(
-                  context,
-                  '/medical_dictionary',
-                ); // Navigate to MedicalDictionary
-              },
-            ),
-            IconButton(
               icon: const Icon(Icons.bookmark, color: Colors.white),
               onPressed: () async {
                 final result = await Navigator.push(
