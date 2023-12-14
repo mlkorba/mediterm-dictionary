@@ -1,5 +1,9 @@
+// ignore_for_file: avoid_print
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mediterm_dictionary/models/model.dart';
+import 'package:mediterm_dictionary/views/login_screen.dart';
 
 class BookmarkListPage extends StatefulWidget {
   final List<Definition> bookmarkedTerms;
@@ -58,23 +62,36 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
           ),
         ),
         centerTitle: true,
-        leading: BackButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          color: Colors.white,
-        ),
+        automaticallyImplyLeading: true,
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            color: Colors.white,
+            onPressed: () {
+              FirebaseAuth.instance.signOut().then((value) {
+                print("Sign Out Successful");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginScreen(),
+                  ),
+                );
+              });
+            },
+          ),
+        ],
       ),
       body: Stack(
         children: [
           Column(
             children: [
               Container(
+                height: 100,
                 decoration: const BoxDecoration(
                   color: Colors.red,
                   borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(
-                        20.0), // Adjust this value for the bottom left border radius
+                    bottomLeft: Radius.circular(30.0),
                   ),
                 ),
                 padding: const EdgeInsets.all(16.0),
@@ -90,7 +107,7 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
                 ),
               ),
               Container(
-                height: 25,
+                height: 50,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.centerLeft,
@@ -102,8 +119,7 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
             ],
           ),
           Positioned(
-            top:
-                78, // Adjust this value to position the Expanded widget as desired
+            top: 100,
             left: 0,
             right: 0,
             bottom: 0,
