@@ -61,11 +61,11 @@ class WordDetailPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    capitalize(definition.id),
+                      definition.id,
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 32,
+                        fontSize: 24,
                     ),
                   ),
                   const SizedBox(height: 4),
