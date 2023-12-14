@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mediterm_dictionary/views/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mediterm_dictionary/services/api_service.dart';
 import 'package:mediterm_dictionary/views/bookmark_list.dart';
@@ -75,6 +77,21 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            color: Colors.white,
+            onPressed: () {
+              FirebaseAuth.instance.signOut().then((value) {
+                print("Sign Out Successful");
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LoginScreen()));
+              });
+            },
+          ),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -123,8 +140,8 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
                             .min, // Ensures the Row takes minimum space
                         children: [
                           IconButton(
-                        icon: const Icon(Icons.search),
-                        onPressed: _search,
+                            icon: const Icon(Icons.search),
+                            onPressed: _search,
                           ),
                           IconButton(
                             icon: const Icon(Icons.clear),
