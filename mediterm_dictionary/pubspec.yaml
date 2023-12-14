@@ -7,12 +7,15 @@ environment:
   sdk: ">=3.2.2 <4.0.0"
 
 dependencies:
+  audioplayers: ^5.2.1
+  cupertino_icons: ^1.0.6
+  firebase_auth: ^4.15.3
+  firebase_core: ^2.24.2
   flutter:
     sdk: flutter
   google_fonts:
   http:
   shared_preferences: ^2.0.10
-  audioplayers:
 
 dev_dependencies:
   flutter_test:
@@ -22,6 +25,4 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/medical-book-heart.jpg
     - assets/vintage-anatomy.jpg
-    - assets/medical-desk.jpg
