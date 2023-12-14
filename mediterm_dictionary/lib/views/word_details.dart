@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mediterm_dictionary/models/model.dart';
 import 'package:mediterm_dictionary/views/bookmark_list.dart';
+import 'package:mediterm_dictionary/views/login_screen.dart';
 
 class WordDetailPage extends StatelessWidget {
   final Definition definition;
@@ -28,12 +30,23 @@ class WordDetailPage extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        leading: BackButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          color: Colors.white,
-        ),
+        automaticallyImplyLeading: true,
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            color: Colors.white,
+            onPressed: () {
+              FirebaseAuth.instance.signOut().then((value) {
+                print("Sign Out Successful");
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LoginScreen()));
+              });
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
