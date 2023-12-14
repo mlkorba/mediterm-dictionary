@@ -93,91 +93,88 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
           ),
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.red,
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(20.0),
-                bottomRight: Radius.circular(-20.0),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.15),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                  offset: const Offset(0, 3),
+          Positioned(
+            top: 78,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 50,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [Colors.white, Colors.red],
                 ),
-              ],
+              ),
             ),
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                // Search bar
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.15),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20.0),
+                    bottomRight: Radius.circular(-20.0),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      hintText: 'Enter a medical term',
-                      border: InputBorder.none,
-                      suffixIcon: Row(
-                        mainAxisSize: MainAxisSize
-                            .min, // Ensures the Row takes minimum space
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.search),
-                            onPressed: _search,
+                ),
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  children: [
+                    // Container 2
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.15),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
                           ),
-                          IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: _clearTextField,
-                          ),
-                          // Add more IconButton widgets as needed
                         ],
                       ),
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: TextField(
+                        controller: _controller,
+                        decoration: InputDecoration(
+                          hintText: 'Enter a medical term',
+                          border: InputBorder.none,
+                          suffixIcon: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.search),
+                                onPressed: _search,
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.clear),
+                                onPressed: _clearTextField,
+                              ),
+                            ],
+                          ),
+                        ),
+                        onChanged: (value) => _search(),
+                        onSubmitted: (value) => _search(),
+                      ),
                     ),
-                    onChanged: (value) => _search(),
-                    onSubmitted: (value) => _search(),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                // Your buttons or other UI elements can go here
-              ],
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(0.0),
-            child: Column(
-              children: [
-                SizedBox(height: 16),
-                Row(
-                  children: [
-                    SizedBox(width: 16), // Add some spacing between the buttons
                   ],
                 ),
-                SizedBox(height: 16),
-              ],
-            ),
-          ),
-          Expanded(
-            child: definitions.isEmpty
-                ? const SizedBox.shrink()
-                : Padding(
+              ),
+              Expanded(
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(20.0),
+                    ),
+                  ),
+                  child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: ListView.builder(
                       itemCount: definitions.length,
@@ -197,7 +194,6 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
                                         bookmarkedDefinitions.contains(term),
                                     bookmarkedDefinitions:
                                         bookmarkedDefinitions,
-                                    // definitions,
                                   ),
                                 ),
                               );
@@ -212,7 +208,6 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  // Other details you might want to display
                                 ],
                               ),
                               trailing: IconButton(
@@ -237,6 +232,9 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
                       },
                     ),
                   ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
