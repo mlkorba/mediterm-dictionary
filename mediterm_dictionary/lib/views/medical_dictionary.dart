@@ -56,6 +56,10 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
     });
   }
 
+  void _clearTextField() {
+    _controller.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
