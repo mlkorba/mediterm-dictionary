@@ -116,11 +116,9 @@ class WordDetailPage extends StatelessWidget {
                               'cat:',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            Text(cleanUpDefinition(
-                                definition.def[0]['cats'].toString())),
+                            ],
                           ],
-                        ],
-                      ),
+                        ),
                     ),
                   ),
                 ),
