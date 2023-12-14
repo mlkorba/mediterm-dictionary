@@ -178,6 +178,9 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
                                     definition: term,
                                     isBookmarked:
                                         bookmarkedDefinitions.contains(term),
+                                    bookmarkedDefinitions:
+                                        bookmarkedDefinitions,
+                                    // definitions,
                                   ),
                                 ),
                               );
