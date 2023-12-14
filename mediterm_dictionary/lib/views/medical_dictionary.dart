@@ -96,7 +96,7 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
       body: Stack(
         children: [
           Positioned(
-            top: 99,
+            top: 78,
             left: 0,
             right: 0,
             child: Container(
@@ -114,7 +114,6 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
-                height: 100,
                 decoration: const BoxDecoration(
                   color: Colors.red,
                   borderRadius: BorderRadius.only(
