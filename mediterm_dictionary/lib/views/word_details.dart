@@ -270,8 +270,12 @@ class DefinitionWidget extends StatelessWidget {
   }
 
   String cleanUpDefinition(String input) {
-    final result =
+    String temp =
         RegExp(r'\{bc\}(.+?)\]').firstMatch(input)?.group(1)?.trim() ?? '';
+    RegExp pattern = RegExp(r'\{d_link\|([^|]+)\|([^|]+)\}');
+
+    String result = temp.replaceAllMapped(pattern, (match) => match.group(2)!);
+
     return result;
   }
 
