@@ -37,39 +37,39 @@ class WordDetailPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.red,
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(20.0),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.15),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                  offset: const Offset(0, 3),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.red,
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(20.0),
                 ),
-              ],
-            ),
-            padding: const EdgeInsets.all(16.0),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                      definition.id,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                    ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.15),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
                   ),
-                  const SizedBox(height: 4),
-                  HwiWidget(hwi: definition.hwi),
+                ],
+              ),
+              padding: const EdgeInsets.all(16.0),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      definition.id,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    HwiWidget(hwi: definition.hwi),
                     IconButton(
                       icon: Icon(
                         // Icons.bookmark_border,
@@ -88,92 +88,93 @@ class WordDetailPage extends StatelessWidget {
                         // });
                       },
                     ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Card for definition.def
-                SizedBox(
-                  width: double.infinity,
-                  child: Card(
-                    elevation: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 8),
-                          DefinitionWidget(def: definition.def),
-                          if (definition.def.isNotEmpty &&
-                              definition.def[0]['cats'] != null) ...[
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Card for definition.def
+                  SizedBox(
+                    width: double.infinity,
+                    child: Card(
+                      elevation: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                             const SizedBox(height: 8),
-                            const Text(
-                              'cat:',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
+                            DefinitionWidget(def: definition.def),
+                            if (definition.def.isNotEmpty &&
+                                definition.def[0]['cats'] != null) ...[
+                              const SizedBox(height: 8),
+                              const Text(
+                                'cat:',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
                             ],
                           ],
                         ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-
-                // Card for definition.stems.join(', ')
-                SizedBox(
-                  width: double.infinity,
-                  child: Card(
-                    elevation: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 8),
-                          const Text(
-                            'RELATED TERMS:',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            capitalize(definition.stems.join(', ')),
-                          ),
-                        ],
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
-                // Card for definition.fl
-                SizedBox(
-                  width: double.infinity,
-                  child: Card(
-                    elevation: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 8),
-                          const Text(
-                            'FUNCTIONAL LABEL:',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(capitalize(definition.fl)),
-                        ],
+                  // Card for definition.stems.join(', ')
+                  SizedBox(
+                    width: double.infinity,
+                    child: Card(
+                      elevation: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 8),
+                            const Text(
+                              'RELATED TERMS:',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              capitalize(definition.stems.join(', ')),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 16),
+
+                  // Card for definition.fl
+                  SizedBox(
+                    width: double.infinity,
+                    child: Card(
+                      elevation: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 8),
+                            const Text(
+                              'FUNCTIONAL LABEL:',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(capitalize(definition.fl)),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.red,
