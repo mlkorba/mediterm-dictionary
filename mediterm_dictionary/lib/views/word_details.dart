@@ -180,15 +180,15 @@ class WordDetailPage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            IconButton(
-              icon: const Icon(Icons.home, color: Colors.white),
-              onPressed: () {
-                Navigator.pushReplacementNamed(
-                  context,
-                  '/medical_dictionary',
-                ); // Navigate to MedicalDictionary
-              },
-            ),
+            // IconButton(
+            //   icon: const Icon(Icons.home, color: Colors.white),
+            //   onPressed: () {
+            //     Navigator.pushReplacementNamed(
+            //       context,
+            //       '/medical_dictionary',
+            //     ); // Navigate to MedicalDictionary
+            //   },
+            // ),
             IconButton(
               icon: const Icon(Icons.bookmark, color: Colors.white),
               onPressed: () async {
