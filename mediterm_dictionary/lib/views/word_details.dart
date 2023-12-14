@@ -191,10 +191,19 @@ class WordDetailPage extends StatelessWidget {
             ),
             IconButton(
               icon: const Icon(Icons.bookmark, color: Colors.white),
-              onPressed: () {
-                Navigator.pushReplacementNamed(
+              onPressed: () async {
+                final result = await Navigator.push(
                   context,
-                  '/bookmark_list',
+                  MaterialPageRoute(
+                    builder: (context) => BookmarkListPage(
+                      bookmarkedTerms: bookmarkedDefinitions,
+                      onUnbookmark: (term) {
+                        // setState(() {
+                        //   bookmarkedDefinitions.remove(term);
+                        // });
+                      },
+                    ),
+                  ),
                 ); // Navigate to BookmarkListPage
               },
             ),
