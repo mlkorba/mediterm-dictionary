@@ -118,9 +118,20 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
                     decoration: InputDecoration(
                       hintText: 'Enter a medical term',
                       border: InputBorder.none,
-                      suffixIcon: IconButton(
+                      suffixIcon: Row(
+                        mainAxisSize: MainAxisSize
+                            .min, // Ensures the Row takes minimum space
+                        children: [
+                          IconButton(
                         icon: const Icon(Icons.search),
                         onPressed: _search,
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: _clearTextField,
+                          ),
+                          // Add more IconButton widgets as needed
+                        ],
                       ),
                     ),
                     onChanged: (value) => _search(),
