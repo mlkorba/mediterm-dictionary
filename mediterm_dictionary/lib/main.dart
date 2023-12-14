@@ -27,15 +27,15 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'My Medical Dictionary App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const HomePage(),
+        '/': (context) => const LoginScreen(),
         '/medical_dictionary': (context) => const MedicalDictionary(),
-        // Add more routes if needed
       },
     );
   }
