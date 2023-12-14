@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "921686556422",
+    "project_id": "mediterm-dictionary",
+    "storage_bucket": "mediterm-dictionary.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:921686556422:android:4afe551619c1c174806887",
+        "android_client_info": {
+          "package_name": "com.example.mediterm_dictionary"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEJuZeSWLTPNj-8mqd-ELQ1w73GPG6XcM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
