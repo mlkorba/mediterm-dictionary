@@ -42,70 +42,46 @@ class WordDetailPage extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const LoginScreen()));
+                    builder: (context) => const LoginScreen(),
+                  ),
+                );
               });
             },
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      body: Stack(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.red,
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(20.0),
+          // Positioned Container (Gradient)
+          Positioned(
+            top: 149,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 50,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [Colors.white, Colors.red],
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.15),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
               ),
-              padding: const EdgeInsets.all(16.0),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      definition.id,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
                     ),
-                    const SizedBox(height: 4),
-                    HwiWidget(hwi: definition.hwi),
-                    IconButton(
-                      icon: Icon(
-                        // Icons.bookmark_border,
+          ),
+
+          // Positioned Container (Card for definition)
+          Positioned(
+            top: 150, // Adjust the value as needed to move it up or down
+            left: 0,
+            right: 0,
+            child: Container(
+              decoration: const BoxDecoration(
                         color: Colors.white,
-                        bookmarkedDefinitions.contains(definition)
-                            ? Icons.bookmark
-                            : Icons.bookmark_border,
-                      ),
-                      onPressed: () {
-                        // setState(() {
-                        //   if (bookmarkedDefinitions.contains(term)) {
-                        //     bookmarkedDefinitions.remove(term);
-                        //   } else {
-                        //     bookmarkedDefinitions.add(term);
-                        //   }
-                        // });
-                      },
-                    ),
-                  ],
-                ),
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(30.0),
               ),
             ),
-            Padding(
+              child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
