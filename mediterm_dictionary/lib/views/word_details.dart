@@ -213,9 +213,11 @@ class WordDetailPage extends StatelessWidget {
     );
   }
 
-  String cleanUpDefinition(String input) {
-    return input.replaceAll(RegExp(r'\{bc\}'), '');
-  }
+  // String cleanUpDefinition(String input) {
+  //   final result =
+  //       RegExp(r'\{bc\}(.+?)\]').firstMatch(input)?.group(1)?.trim() ?? '';
+  //   return result;
+  // }
 
   String capitalize(String input) {
     if (input.isEmpty) {
