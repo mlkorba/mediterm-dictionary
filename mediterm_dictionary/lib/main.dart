@@ -29,13 +29,10 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'My Medical Dictionary App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       initialRoute: '/',
       routes: {
         '/': (context) => const LoginScreen(),
-        '/medical_dictionary': (context) => const MedicalDictionary(),
+        '/home': (context) => const MedicalDictionary(),
       },
     );
   }
