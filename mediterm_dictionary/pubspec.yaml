@@ -15,8 +15,10 @@ dependencies:
     sdk: flutter
   google_fonts:
   http:
+  path: ^1.8.3
   provider: ^6.1.1
   shared_preferences: ^2.0.10
+  sqflite: ^2.3.0
 
 dev_dependencies:
   flutter_test:
