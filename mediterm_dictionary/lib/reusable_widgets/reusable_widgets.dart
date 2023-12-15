@@ -76,28 +76,34 @@ class CustomBottomNavigationBar extends StatelessWidget {
   final VoidCallback onBookmarkPressed;
 
   const CustomBottomNavigationBar({
-    super.key,
+    Key? key,
     required this.onSearchPressed,
     required this.onBookmarkPressed,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BottomAppBar(
-      color: Colors.red,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.search, color: Colors.white),
-            onPressed: onSearchPressed,
-          ),
-          IconButton(
-            icon: const Icon(Icons.bookmark, color: Colors.white),
-            onPressed: onBookmarkPressed,
-          ),
-        ],
-      ),
+    return BottomNavigationBar(
+      backgroundColor: Colors.red,
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.white.withOpacity(0.7),
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          label: 'Search',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.bookmark),
+          label: 'Bookmarks',
+        ),
+      ],
+      onTap: (index) {
+        if (index == 0) {
+          onSearchPressed();
+        } else if (index == 1) {
+          onBookmarkPressed();
+        }
+      },
     );
   }
 }
