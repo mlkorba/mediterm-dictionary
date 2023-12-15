@@ -11,30 +11,61 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen>
+    with SingleTickerProviderStateMixin {
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
+
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Create an AnimationController
+    _controller = AnimationController(
+      duration: const Duration(seconds: 50), // Adjust the duration as needed
+      vsync: this,
+    );
+
+    // Create a Tween for the animation
+    Tween<double> tween = Tween(begin: -1.0, end: 1.0);
+
+    // Initialize the animation using the Tween and AnimationController
+    _animation = tween.animate(_controller);
+
+    // Repeat the animation back and forth
+    _controller.repeat(reverse: true);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                    'assets/vintage-anatomy.jpg'), // Replace with your image asset
-                fit: BoxFit.cover, // Adjust as needed
-              ),
-            ),
+          // Background with Animation
+          AnimatedBuilder(
+            animation: _animation,
+            builder: (BuildContext context, Widget? child) {
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: const AssetImage('assets/vintage-anatomy.jpg'),
+                    fit: BoxFit.cover,
+                    alignment: Alignment(_animation.value, 0),
+                  ),
+                ),
+              );
+            },
           ),
+          // Overlay with Opacity
           Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            color: Colors.black.withOpacity(0.5), // Adjust opacity as needed
+            color: Colors.black.withOpacity(0.5),
           ),
           SingleChildScrollView(
             child: Padding(
@@ -68,9 +99,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         .then((value) {
                       print("Login Successful");
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const MedicalDictionary()));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MedicalDictionary(),
+                        ),
+                      );
                     }).onError((error, stackTrace) {
                       print("Error ${error.toString()}");
                     });
@@ -95,8 +128,12 @@ class _LoginScreenState extends State<LoginScreen> {
             )),
         GestureDetector(
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const SignUpScreen()));
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const SignUpScreen(),
+              ),
+            );
           },
           child: const Text(
             " Sign Up",
@@ -105,5 +142,11 @@ class _LoginScreenState extends State<LoginScreen> {
         )
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }
