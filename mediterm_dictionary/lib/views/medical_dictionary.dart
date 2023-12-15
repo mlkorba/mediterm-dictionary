@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mediterm_dictionary/reusable_widgets/reusable_widgets.dart';
+import 'package:mediterm_dictionary/services/database_helper.dart';
 import 'package:mediterm_dictionary/views/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mediterm_dictionary/services/api_service.dart';
@@ -30,7 +31,6 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
     _controller.clear();
   }
 
-  //Search API
   void _search() async {
     final word = _controller.text.trim();
     if (word.isNotEmpty) {
@@ -42,6 +42,15 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
               .map<Definition>((dynamic entry) => Definition.fromJson(entry))
               .toList();
         });
+
+        // Load bookmarked terms from the database
+        final bookmarks = await DatabaseHelper.getAllBookmarks();
+        setState(() {
+          bookmarkedDefinitions = bookmarks
+              .map<Definition>((bookmark) => Definition.fromJson(bookmark))
+              .toList();
+        });
+
         _saveLastSearch(word);
       } catch (e) {
         print('Error fetching definitions: $e');
@@ -54,26 +63,26 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
     await _prefs.setString(_lastSearchKey, word);
   }
 
-  //Unbookmark Term
-  void _unbookmarkTerm(Definition term) {
-    setState(() {
-      bookmarkedDefinitions.remove(term);
-    });
+  void _unbookmarkTerm(Definition term) async {
+    // Check if the term is bookmarked before trying to remove it
+    if (await DatabaseHelper.isBookmarked(term.id)) {
+      await DatabaseHelper.deleteBookmark(term.id);
+
+      // Update the UI
+      setState(() {
+        bookmarkedDefinitions.remove(term);
+      });
+    }
   }
 
-  //Clear search input box
   void _clearTextField() {
-    _controller.clear();
-  }
-
-//Update bookmarked state
-  void _updateBookmarkedState(Definition term, bool isBookmarked) {
     setState(() {
-      term.isBookmarked = isBookmarked;
+      _controller.clear();
+      definitions.clear();
+      bookmarkedDefinitions.clear();
     });
   }
 
-  //Page Build
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -250,6 +259,7 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         onSearchPressed: () {
+          // Navigate to the MedicalDictionary page
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -258,17 +268,13 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
           );
         },
         onBookmarkPressed: () {
-          Navigator.push(
+          // Navigate to the BookmarkListPage
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => BookmarkListPage(
-                bookmarkedTerms: bookmarkedDefinitions,
-                onUnbookmark: (term) {
-                  setState(() {
-                    bookmarkedDefinitions.remove(term);
-                  });
-                },
                 allTerms: const [],
+                onUnbookmark: (term) {},
               ),
             ),
           );
