@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mediterm_dictionary/models/model.dart';
+import 'package:mediterm_dictionary/reusable_widgets/reusable_widgets.dart';
 import 'package:mediterm_dictionary/views/login_screen.dart';
+import 'package:mediterm_dictionary/views/medical_dictionary.dart';
 import 'package:mediterm_dictionary/views/word_details.dart';
 
 class BookmarkListPage extends StatefulWidget {
@@ -68,6 +70,7 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
+          color: Colors.white,
           onPressed: () {
             Navigator.pop(context); // Go back to the previous page
           },
@@ -142,7 +145,7 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(16.0),
                 child: ListView.builder(
                   itemCount: widget.bookmarkedTerms.length,
                   itemBuilder: (context, index) {
@@ -201,6 +204,17 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        onSearchPressed: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const MedicalDictionary(),
+            ),
+          );
+        },
+        onBookmarkPressed: () {},
       ),
     );
   }
