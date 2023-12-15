@@ -3,8 +3,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mediterm_dictionary/models/model.dart';
+import 'package:mediterm_dictionary/reusable_widgets/reusable_widgets.dart';
 import 'package:mediterm_dictionary/views/bookmark_list.dart';
 import 'package:mediterm_dictionary/views/login_screen.dart';
+import 'package:mediterm_dictionary/views/medical_dictionary.dart';
 
 class WordDetailPage extends StatefulWidget {
   final Definition definition;
@@ -76,7 +78,7 @@ class _WordDetailPageState extends State<WordDetailPage> {
             ),
           ),
 
-          // Positioned Container (Card for definition)
+          //Positioned container for cards
           Positioned(
             top: 150,
             left: 0,
@@ -93,7 +95,7 @@ class _WordDetailPageState extends State<WordDetailPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Card for definition.def
+                    //Card for Definition
                     SizedBox(
                       width: double.infinity,
                       child: Card(
@@ -120,7 +122,7 @@ class _WordDetailPageState extends State<WordDetailPage> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Card for definition.stems.join(', ')
+                    // Card for Related Terms
                     SizedBox(
                       width: double.infinity,
                       child: Card(
@@ -136,7 +138,7 @@ class _WordDetailPageState extends State<WordDetailPage> {
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                capitalize(widget.definition.stems.join(', ')),
+                                widget.definition.stems.join(', '),
                               ),
                             ],
                           ),
@@ -145,7 +147,7 @@ class _WordDetailPageState extends State<WordDetailPage> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Card for definition.fl
+                    // Card for Functional Label
                     SizedBox(
                       width: double.infinity,
                       child: Card(
@@ -160,7 +162,7 @@ class _WordDetailPageState extends State<WordDetailPage> {
                                 'FUNCTIONAL LABEL:',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              Text(capitalize(widget.definition.fl)),
+                              Text(widget.definition.fl),
                             ],
                           ),
                         ),
@@ -172,7 +174,7 @@ class _WordDetailPageState extends State<WordDetailPage> {
             ),
           ),
 
-          // Container 1 (Text)
+          // Container under appbar
           Positioned(
             top: 0,
             left: 0,
@@ -202,27 +204,6 @@ class _WordDetailPageState extends State<WordDetailPage> {
                       ),
                       const SizedBox(height: 5),
                       HwiWidget(hwi: widget.definition.hwi),
-                      IconButton(
-                        icon: Icon(
-                          widget.bookmarkedDefinitions
-                                  .contains(widget.definition)
-                              ? Icons.bookmark
-                              : Icons.bookmark_border,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            if (widget.bookmarkedDefinitions
-                                .contains(widget.definition)) {
-                              widget.bookmarkedDefinitions
-                                  .remove(widget.definition);
-                            } else {
-                              widget.bookmarkedDefinitions
-                                  .add(widget.definition);
-                            }
-                          });
-                        },
-                      ),
                     ],
                   ),
                 ),
@@ -231,27 +212,31 @@ class _WordDetailPageState extends State<WordDetailPage> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.red,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: Icon(
-                widget.isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                // setState(() {
-                //   widget.isBookmarked
-                //       ? widget.onUnbookmark(widget.definition)
-                //       : widget.bookmarkedDefinitions.add(widget.definition);
-                // });
-                Navigator.pop(context, widget.isBookmarked);
-              },
+      bottomNavigationBar: CustomBottomNavigationBar(
+        onSearchPressed: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const MedicalDictionary(),
             ),
-          ],
-        ),
+          );
+        },
+        onBookmarkPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BookmarkListPage(
+                bookmarkedTerms: widget.bookmarkedDefinitions,
+                onUnbookmark: (term) {
+                  setState(() {
+                    widget.bookmarkedDefinitions.remove(term);
+                  });
+                },
+                allTerms: const [],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -272,7 +257,6 @@ class HwiWidget extends StatelessWidget {
           hwi['hw'],
           style: const TextStyle(
             color: Colors.white,
-            fontWeight: FontWeight.bold,
             fontSize: 16,
           ),
         ),
