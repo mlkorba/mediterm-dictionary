@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 class Definition {
   final String id;
   final String term;
