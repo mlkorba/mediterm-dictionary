@@ -50,8 +50,7 @@ class Definition {
     return Definition(
       id: id,
       term: term,
-      definition:
-          '', // You can leave the definition empty or provide another field if needed
+      definition: '',
       stems: stems,
       hwi: hwi,
       prs: prs,
