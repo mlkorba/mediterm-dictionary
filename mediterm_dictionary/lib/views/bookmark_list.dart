@@ -1,32 +1,33 @@
-// ignore_for_file: avoid_print
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mediterm_dictionary/models/model.dart';
 import 'package:mediterm_dictionary/views/login_screen.dart';
+import 'package:mediterm_dictionary/views/word_details.dart';
 
 class BookmarkListPage extends StatefulWidget {
   final List<Definition> bookmarkedTerms;
+  final List<Definition> allTerms;
   final ValueChanged<Definition> onUnbookmark;
 
-  BookmarkListPage({
+  const BookmarkListPage({
+    Key? key,
     required this.bookmarkedTerms,
+    required this.allTerms,
     required this.onUnbookmark,
-  });
+  }) : super(key: key);
 
   @override
   _BookmarkListPageState createState() => _BookmarkListPageState();
 }
 
 class _BookmarkListPageState extends State<BookmarkListPage> {
+  // SnackBar
   void _showUndoSnackBar(Definition term) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Center(
-          child: Text(
-            '${_capitalizeFirstLetter(term.term.replaceAll('*', ''))} was unbookmarked',
-            textAlign: TextAlign.center,
-          ),
+        content: Text(
+          '${term.term.replaceAll('*', '')} was unbookmarked',
+          textAlign: TextAlign.center,
         ),
         action: SnackBarAction(
           label: 'Undo',
@@ -35,19 +36,22 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
             setState(() {
               widget.bookmarkedTerms.add(term);
             });
+            widget.onUnbookmark(term); // Notify the parent widget
           },
         ),
       ),
     );
   }
 
-  String _capitalizeFirstLetter(String input) {
-    if (input.isEmpty) {
-      return input;
-    }
-    return input[0].toUpperCase() + input.substring(1);
-  }
+  // Capitalize First Letter
+  // String _capitalizeFirstLetter(String input) {
+  //   if (input.isEmpty) {
+  //     return input;
+  //   }
+  //   return input[0].toUpperCase() + input.substring(1);
+  // }
 
+  // Page Build
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,8 +66,12 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
           ),
         ),
         centerTitle: true,
-        automaticallyImplyLeading: true,
-        iconTheme: const IconThemeData(color: Colors.white),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Go back to the previous page
+          },
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -140,21 +148,50 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
                   itemBuilder: (context, index) {
                     final term = widget.bookmarkedTerms[index];
                     return Card(
-                      elevation: 4.0,
-                      margin: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        title: Text(
-                          _capitalizeFirstLetter(term.term.replaceAll('*', '')),
-                        ),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.bookmark),
-                          onPressed: () {
-                            setState(() {
-                              widget.bookmarkedTerms.remove(term);
-                            });
-                            _showUndoSnackBar(term);
-                            widget.onUnbookmark(term);
-                          },
+                      elevation: 3,
+                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WordDetailPage(
+                                definition: term,
+                                isBookmarked:
+                                    widget.bookmarkedTerms.contains(term),
+                                bookmarkedDefinitions: widget.bookmarkedTerms,
+                              ),
+                            ),
+                          );
+                        },
+                        child: ListTile(
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                term.id,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          trailing: IconButton(
+                            icon: Icon(
+                              widget.bookmarkedTerms.contains(term)
+                                  ? Icons.bookmark
+                                  : Icons.bookmark_border,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                // Remove the term from the list of displayed terms
+                                widget.bookmarkedTerms.remove(term);
+                              });
+                              _showUndoSnackBar(term);
+                              widget.onUnbookmark(
+                                  term); // Notify the parent widget
+                            },
+                          ),
                         ),
                       ),
                     );

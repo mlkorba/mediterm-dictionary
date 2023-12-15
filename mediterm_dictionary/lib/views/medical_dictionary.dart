@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mediterm_dictionary/reusable_widgets/reusable_widgets.dart';
 import 'package:mediterm_dictionary/views/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mediterm_dictionary/services/api_service.dart';
@@ -29,6 +30,7 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
     _controller.clear();
   }
 
+  //Search API
   void _search() async {
     final word = _controller.text.trim();
     if (word.isNotEmpty) {
@@ -52,14 +54,22 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
     await _prefs.setString(_lastSearchKey, word);
   }
 
+  //Unbookmark Term
   void _unbookmarkTerm(Definition term) {
     setState(() {
       bookmarkedDefinitions.remove(term);
     });
   }
 
+  //Clear search input box
   void _clearTextField() {
     _controller.clear();
+  }
+
+  void _updateBookmarkedState(Definition term, bool isBookmarked) {
+    setState(() {
+      term.isBookmarked = isBookmarked;
+    });
   }
 
   @override
@@ -236,31 +246,31 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.red,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.bookmark, color: Colors.white),
-              onPressed: () async {
-                final result = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BookmarkListPage(
-                      bookmarkedTerms: bookmarkedDefinitions,
-                      onUnbookmark: (term) {
-                        setState(() {
-                          bookmarkedDefinitions.remove(term);
-                        });
-                      },
-                    ),
-                  ),
-                ); // Navigate to BookmarkListPage
-              },
+      bottomNavigationBar: CustomBottomNavigationBar(
+        onSearchPressed: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const MedicalDictionary(),
             ),
-          ],
-        ),
+          );
+        },
+        onBookmarkPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BookmarkListPage(
+                bookmarkedTerms: bookmarkedDefinitions,
+                onUnbookmark: (term) {
+                  setState(() {
+                    bookmarkedDefinitions.remove(term);
+                  });
+                },
+                allTerms: const [],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

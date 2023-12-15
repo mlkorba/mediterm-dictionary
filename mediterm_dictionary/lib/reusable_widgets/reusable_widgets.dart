@@ -70,3 +70,34 @@ Container loginSignUpButton(
     ), // ElevatedButton
   ); // Container
 }
+
+class CustomBottomNavigationBar extends StatelessWidget {
+  final VoidCallback onSearchPressed;
+  final VoidCallback onBookmarkPressed;
+
+  const CustomBottomNavigationBar({
+    super.key,
+    required this.onSearchPressed,
+    required this.onBookmarkPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomAppBar(
+      color: Colors.red,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.search, color: Colors.white),
+            onPressed: onSearchPressed,
+          ),
+          IconButton(
+            icon: const Icon(Icons.bookmark, color: Colors.white),
+            onPressed: onBookmarkPressed,
+          ),
+        ],
+      ),
+    );
+  }
+}
