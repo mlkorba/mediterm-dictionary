@@ -2,18 +2,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mediterm_dictionary/models/model.dart';
 import 'package:mediterm_dictionary/reusable_widgets/reusable_widgets.dart';
+import 'package:mediterm_dictionary/services/database_helper.dart';
 import 'package:mediterm_dictionary/views/login_screen.dart';
 import 'package:mediterm_dictionary/views/medical_dictionary.dart';
-import 'package:mediterm_dictionary/views/word_details.dart';
 
 class BookmarkListPage extends StatefulWidget {
-  final List<Definition> bookmarkedTerms;
   final List<Definition> allTerms;
   final ValueChanged<Definition> onUnbookmark;
 
   const BookmarkListPage({
     Key? key,
-    required this.bookmarkedTerms,
     required this.allTerms,
     required this.onUnbookmark,
   }) : super(key: key);
@@ -23,6 +21,21 @@ class BookmarkListPage extends StatefulWidget {
 }
 
 class _BookmarkListPageState extends State<BookmarkListPage> {
+  late List<Map<String, dynamic>> _bookmarks =
+      []; // Variable to store bookmarks
+
+  @override
+  void initState() {
+    super.initState();
+    _loadBookmarks(); // Load bookmarks when the widget initializes
+  }
+
+  // Load bookmarks from the database
+  Future<void> _loadBookmarks() async {
+    _bookmarks = await DatabaseHelper.getAllBookmarks();
+    setState(() {}); // Update the UI after loading bookmarks
+  }
+
   // SnackBar
   void _showUndoSnackBar(Definition term) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -33,11 +46,19 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
         ),
         action: SnackBarAction(
           label: 'Undo',
-          onPressed: () {
+          onPressed: () async {
             // Re-add the term to the list if the user undoes the action
-            setState(() {
-              widget.bookmarkedTerms.add(term);
+            await DatabaseHelper.insertBookmark({
+              'id': term.id,
+              'term': term.term,
+              'definition': term.definition,
+              'stems': term.stems.join(', '),
+              'hwi': term.hwi.toString(),
+              'prs': term.prs.toString(),
+              'fl': term.fl,
+              'def': term.def.toString(),
             });
+            _loadBookmarks(); // Reload bookmarks after inserting
             widget.onUnbookmark(term); // Notify the parent widget
           },
         ),
@@ -45,15 +66,6 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
     );
   }
 
-  // Capitalize First Letter
-  // String _capitalizeFirstLetter(String input) {
-  //   if (input.isEmpty) {
-  //     return input;
-  //   }
-  //   return input[0].toUpperCase() + input.substring(1);
-  // }
-
-  // Page Build
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,32 +159,32 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: ListView.builder(
-                  itemCount: widget.bookmarkedTerms.length,
+                  itemCount: _bookmarks.length,
                   itemBuilder: (context, index) {
-                    final term = widget.bookmarkedTerms[index];
+                    final bookmark = _bookmarks[index];
                     return Card(
                       elevation: 3,
                       margin: const EdgeInsets.symmetric(vertical: 8),
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => WordDetailPage(
-                                definition: term,
-                                isBookmarked:
-                                    widget.bookmarkedTerms.contains(term),
-                                bookmarkedDefinitions: widget.bookmarkedTerms,
-                              ),
-                            ),
-                          );
+                          // You can navigate to the details page here if needed
+                          // Example: Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => WordDetailPage(
+                          //       definition: term,
+                          //       isBookmarked: true,
+                          //       bookmarkedDefinitions: widget.bookmarkedTerms,
+                          //     ),
+                          //   ),
+                          // );
                         },
                         child: ListTile(
                           title: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                term.id,
+                                bookmark['term'],
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -180,19 +192,15 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
                             ],
                           ),
                           trailing: IconButton(
-                            icon: Icon(
-                              widget.bookmarkedTerms.contains(term)
-                                  ? Icons.bookmark
-                                  : Icons.bookmark_border,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                // Remove the term from the list of displayed terms
-                                widget.bookmarkedTerms.remove(term);
-                              });
-                              _showUndoSnackBar(term);
-                              widget.onUnbookmark(
-                                  term); // Notify the parent widget
+                            icon: const Icon(Icons.bookmark),
+                            onPressed: () async {
+                              // Remove the bookmark from the database
+                              await DatabaseHelper.deleteBookmark(
+                                  bookmark['id']);
+                              _loadBookmarks(); // Reload bookmarks after deleting
+                              _showUndoSnackBar(Definition.fromJson(bookmark));
+                              widget.onUnbookmark(Definition.fromJson(
+                                  bookmark)); // Notify the parent widget
                             },
                           ),
                         ),
@@ -207,6 +215,7 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         onSearchPressed: () {
+          // Navigate to the MedicalDictionary page
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -214,7 +223,18 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
             ),
           );
         },
-        onBookmarkPressed: () {},
+        onBookmarkPressed: () {
+          // Navigate to the BookmarkListPage
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BookmarkListPage(
+                allTerms: const [],
+                onUnbookmark: (term) {},
+              ),
+            ),
+          );
+        },
       ),
     );
   }
