@@ -78,7 +78,7 @@ class _WordDetailPageState extends State<WordDetailPage> {
             ),
           ),
 
-          //Positioned container for cards
+          // Cards
           Positioned(
             top: 150,
             left: 0,
@@ -95,7 +95,7 @@ class _WordDetailPageState extends State<WordDetailPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    //Card for Definition
+                    // Card for Definition
                     SizedBox(
                       width: double.infinity,
                       child: Card(
@@ -174,7 +174,7 @@ class _WordDetailPageState extends State<WordDetailPage> {
             ),
           ),
 
-          // Container under appbar
+          // Container 1 (Text)
           Positioned(
             top: 0,
             left: 0,
@@ -214,6 +214,7 @@ class _WordDetailPageState extends State<WordDetailPage> {
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         onSearchPressed: () {
+          // Navigate to the MedicalDictionary page
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -222,17 +223,13 @@ class _WordDetailPageState extends State<WordDetailPage> {
           );
         },
         onBookmarkPressed: () {
-          Navigator.push(
+          // Navigate to the BookmarkListPage
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => BookmarkListPage(
-                bookmarkedTerms: widget.bookmarkedDefinitions,
-                onUnbookmark: (term) {
-                  setState(() {
-                    widget.bookmarkedDefinitions.remove(term);
-                  });
-                },
                 allTerms: const [],
+                onUnbookmark: (term) {},
               ),
             ),
           );
