@@ -66,12 +66,14 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
     _controller.clear();
   }
 
+//Update bookmarked state
   void _updateBookmarkedState(Definition term, bool isBookmarked) {
     setState(() {
       term.isBookmarked = isBookmarked;
     });
   }
 
+  //Page Build
   @override
   Widget build(BuildContext context) {
     return Scaffold(
