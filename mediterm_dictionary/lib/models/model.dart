@@ -7,6 +7,7 @@ class Definition {
   final List<Map<String, dynamic>> prs;
   final String fl;
   final List<Map<String, dynamic>> def;
+  bool isBookmarked;
 
   Definition({
     required this.id,
@@ -17,6 +18,7 @@ class Definition {
     required this.prs,
     required this.fl,
     required this.def,
+    this.isBookmarked = false, // Provide a default value
   });
 
   factory Definition.fromJson(Map<String, dynamic> json) {
