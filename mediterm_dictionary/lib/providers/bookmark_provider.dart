@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mediterm_dictionary/models/model.dart';
 
 class BookmarkProvider extends ChangeNotifier {
-  List<Definition> _bookmarkedDefinitions = [];
+  final List<Definition> _bookmarkedDefinitions = [];
 
   List<Definition> get bookmarkedDefinitions => _bookmarkedDefinitions;
 

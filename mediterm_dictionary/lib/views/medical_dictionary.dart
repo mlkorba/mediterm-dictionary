@@ -64,22 +64,41 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
   }
 
   void _unbookmarkTerm(Definition term) async {
-    // Check if the term is bookmarked before trying to remove it
     if (await DatabaseHelper.isBookmarked(term.id)) {
       await DatabaseHelper.deleteBookmark(term.id);
 
-      // Update the UI
       setState(() {
         bookmarkedDefinitions.remove(term);
       });
     }
   }
 
+  void _bookmarkTerm(Definition term) async {
+    setState(() {
+      if (bookmarkedDefinitions.contains(term)) {
+        bookmarkedDefinitions.remove(term);
+        // Remove the term from bookmarks in the database
+        DatabaseHelper.deleteBookmark(term.id);
+      } else {
+        bookmarkedDefinitions.add(term);
+        // Add the term to bookmarks in the database
+        DatabaseHelper.insertBookmark({
+          'id': term.id,
+          'term': term.term,
+          'definition': term.definition,
+          'stems': term.stems.join(', '),
+          'hwi': term.hwi.toString(),
+          'prs': term.prs.toString(),
+          'fl': term.fl,
+          'def': term.def.toString(),
+        });
+      }
+    });
+  }
+
   void _clearTextField() {
     setState(() {
       _controller.clear();
-      definitions.clear();
-      bookmarkedDefinitions.clear();
     });
   }
 
@@ -236,13 +255,7 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
                                       : Icons.bookmark_border,
                                 ),
                                 onPressed: () {
-                                  setState(() {
-                                    if (bookmarkedDefinitions.contains(term)) {
-                                      bookmarkedDefinitions.remove(term);
-                                    } else {
-                                      bookmarkedDefinitions.add(term);
-                                    }
-                                  });
+                                  _bookmarkTerm(term);
                                 },
                               ),
                             ),
@@ -273,8 +286,8 @@ class _MedicalDictionaryState extends State<MedicalDictionary> {
             context,
             MaterialPageRoute(
               builder: (context) => BookmarkListPage(
-                allTerms: const [],
-                onUnbookmark: (term) {},
+                allTerms: bookmarkedDefinitions,
+                onUnbookmark: _unbookmarkTerm,
               ),
             ),
           );

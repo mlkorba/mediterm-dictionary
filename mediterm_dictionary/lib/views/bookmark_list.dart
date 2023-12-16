@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, library_private_types_in_public_api
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mediterm_dictionary/models/model.dart';
@@ -21,8 +23,7 @@ class BookmarkListPage extends StatefulWidget {
 }
 
 class _BookmarkListPageState extends State<BookmarkListPage> {
-  late List<Map<String, dynamic>> _bookmarks =
-      []; // Variable to store bookmarks
+  late List<Map<String, dynamic>> _bookmarks = [];
 
   @override
   void initState() {
@@ -33,9 +34,13 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
   // Load bookmarks from the database
   Future<void> _loadBookmarks() async {
     _bookmarks = await DatabaseHelper.getAllBookmarks();
-    setState(() {}); // Update the UI after loading bookmarks
+    setState(() {
+      // Print loaded bookmarks to check
+      print('Loaded Bookmarks: $_bookmarks');
+    });
   }
 
+  // SnackBar
   // SnackBar
   void _showUndoSnackBar(Definition term) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -47,7 +52,6 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
         action: SnackBarAction(
           label: 'Undo',
           onPressed: () async {
-            // Re-add the term to the list if the user undoes the action
             await DatabaseHelper.insertBookmark({
               'id': term.id,
               'term': term.term,
@@ -58,8 +62,19 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
               'fl': term.fl,
               'def': term.def.toString(),
             });
-            _loadBookmarks(); // Reload bookmarks after inserting
-            widget.onUnbookmark(term); // Notify the parent widget
+
+            setState(() {
+              _bookmarks.add({
+                'id': term.id,
+                'term': term.term,
+                'definition': term.definition,
+                'stems': term.stems.join(', '),
+                'hwi': term.hwi.toString(),
+                'prs': term.prs.toString(),
+                'fl': term.fl,
+                'def': term.def.toString(),
+              });
+            });
           },
         ),
       ),
@@ -84,7 +99,12 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
           icon: const Icon(Icons.arrow_back),
           color: Colors.white,
           onPressed: () {
-            Navigator.pop(context); // Go back to the previous page
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MedicalDictionary(),
+              ),
+            );
           },
         ),
         actions: [
@@ -165,48 +185,30 @@ class _BookmarkListPageState extends State<BookmarkListPage> {
                     return Card(
                       elevation: 3,
                       margin: const EdgeInsets.symmetric(vertical: 8),
-                      child: GestureDetector(
-                        onTap: () {
-                          // You can navigate to the details page here if needed
-                          // Example: Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => WordDetailPage(
-                          //       definition: term,
-                          //       isBookmarked: true,
-                          //       bookmarkedDefinitions: widget.bookmarkedTerms,
-                          //     ),
-                          //   ),
-                          // );
-                        },
-                        child: ListTile(
-                          title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                bookmark['term'],
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                      child: ListTile(
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              bookmark['term'],
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
                               ),
-                            ],
-                          ),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.bookmark),
-                            onPressed: () async {
-                              // Remove the bookmark from the database
-                              await DatabaseHelper.deleteBookmark(
-                                  bookmark['id']);
-                              _loadBookmarks(); // Reload bookmarks after deleting
-                              _showUndoSnackBar(Definition.fromJson(bookmark));
-                              widget.onUnbookmark(Definition.fromJson(
-                                  bookmark)); // Notify the parent widget
-                            },
-                          ),
+                            ),
+                          ],
+                        ),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.bookmark),
+                          onPressed: () async {
+                            await DatabaseHelper.deleteBookmark(bookmark['id']);
+                            _loadBookmarks();
+                            _showUndoSnackBar(Definition.fromJson(bookmark));
+                            widget.onUnbookmark(Definition.fromJson(bookmark));
+                          },
                         ),
                       ),
                     );
-                  }, // itemBuilder
+                  },
                 ),
               ),
             ),

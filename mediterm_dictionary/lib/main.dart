@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:mediterm_dictionary/providers/bookmark_provider.dart';
 import 'package:mediterm_dictionary/views/login_screen.dart';
 import 'package:mediterm_dictionary/views/medical_dictionary.dart';
 import 'package:mediterm_dictionary/services/api_service.dart';
+import 'package:provider/provider.dart';
 
 final ApiService apiService =
     ApiService('e685bd9f-83a4-429f-bfa1-599dfb152bec');
@@ -18,7 +20,12 @@ void main() async {
               messagingSenderId: '921686556422',
               projectId: 'mediterm-dictionary'))
       : await Firebase.initializeApp();
-  runApp(const MainApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => BookmarkProvider(),
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
