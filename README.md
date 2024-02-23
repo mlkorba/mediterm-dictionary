@@ -8,6 +8,12 @@ Medi-Term Dictionary is a mobile application designed to provide users with quic
 * **Bookmark Favorite Terms:** Bookmark your favorite medical terms for quick access later.
 * **Local Storage:** Store bookmarked words locally on your device for offline access.
 
+## Screenshots
+![Login/Signup Screen](screenshots/1.png)
+![Search Screen](screenshots/2.png)
+![Definition Screen](screenshots/3.png)
+![Bookmark List Screen](screenshots/4.png)
+
 ## Installation
 To use the Medi-Term Dictionary App, follow these steps:
 
