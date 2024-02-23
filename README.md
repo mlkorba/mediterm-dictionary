@@ -19,7 +19,7 @@ To use the Medi-Term Dictionary App, follow these steps:
 
 1. Clone this repository to your local machine.
 2. Ensure you have Flutter installed. If not, follow the [Flutter installation instructions](https://flutter.dev/docs/get-started/install).
-3. Run ``` flutter pub ``` get to install dependencies.
+3. Run ``` flutter pub get ``` to install dependencies.
 4. Launch the app on an emulator or physical device using ``` flutter run ```.
 
 ## Usage
